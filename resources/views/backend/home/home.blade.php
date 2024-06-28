@@ -104,14 +104,14 @@
                     <div class="card-body">
                         <x-form.form action="{{route('userInformation')}}" method="post" has-files>
                             @csrf
-                            <x-form.input name="title"/>
+                            <x-form.input name="title" value="dfsdfsdf"/>
                             <x-form.input name="name" />
                             <x-form.input name="phone" type="number" />
                             <x-form.input name="email" type="email" />
                             <x-form.input name="password" type="password" />
                             <x-form.select :curd="$curd" name="curd_id" />
                             <x-form.input name="image" type="file" />
-                            <x-form.textarea name="description" />
+                            <x-form.textarea name="description" value="sdfsdfsdfsdf"/>
                             <x-form.button> Submit</x-form.button>
                         </x-form.form>
                     </div>
@@ -124,16 +124,7 @@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        {{-- @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif --}}
-        <x-validation-errors />
+        <x-form.error />
         <form action="{{ route('curd.store') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
