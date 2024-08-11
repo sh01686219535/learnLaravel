@@ -6,13 +6,18 @@ use App\Models\Curd;
 use App\Models\userInvormation;
 use Illuminate\Http\Request;
 use File;
+use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
     //index
     public function index()
     {
-        $curd = Curd::all();
+        $curd = Cache::rememberForever('curd', function () {
+            return Curd::all(); 
+        });
+        
         return view('backend.home.home', compact('curd'));
     }
     //userInformation
@@ -47,6 +52,20 @@ class HomeController extends Controller
         $userInfo->curd_id = $request->curd_id;
         $userInfo->description = $request->description;
         $userInfo->save();
+        return back();
+    }
+    //addToCart
+    public function addToCart($id){
+        $curd = Curd::findOrFail($id);
+        Cart::add([
+            'id' => $curd->id, 
+            'name' => $curd->title, 
+            'qty' => 1, 
+            'price' => 9.99, 
+            'options' => [
+                'image' => $curd->image
+                ]
+            ]);
         return back();
     }
 }

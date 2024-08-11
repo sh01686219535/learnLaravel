@@ -102,19 +102,36 @@
                 <div class="card">
                     <x-form.error />
                     <div class="card-body">
-                        <x-form.form action="{{route('userInformation')}}" method="post" has-files>
+                        <x-form.form action="{{ route('userInformation') }}" method="post" has-files>
                             @csrf
-                            <x-form.input name="title" value="dfsdfsdf"/>
+                            <x-form.input name="title" value="dfsdfsdf" />
                             <x-form.input name="name" />
                             <x-form.input name="phone" type="number" />
                             <x-form.input name="email" type="email" />
                             <x-form.input name="password" type="password" />
                             <x-form.select :curd="$curd" name="curd_id" />
                             <x-form.input name="image" type="file" />
-                            <x-form.textarea name="description" value="sdfsdfsdfsdf"/>
+                            <x-form.textarea name="description" value="sdfsdfsdfsdf" />
                             <x-form.button> Submit</x-form.button>
                         </x-form.form>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="py-12 my-5">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="row">
+                    @foreach ($curd as $curds)
+                        <div class="col-md-4">
+                            <div class="card" style="width:18rem">
+                                <img src="{{ asset($curds->image) }}" alt="">
+                                <div class="card-body">
+                                    <h1>{{ $curds->title }}</h1>
+                                    <a href="{{route('add-to-cart',$curds->id)}}" class="btn btn-danger mt-3">Add to Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>

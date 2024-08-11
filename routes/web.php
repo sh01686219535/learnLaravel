@@ -20,8 +20,3 @@ Route::get('/', function () {
 });
 // Route::get('/',[HomeController::class,'index']);
 
-Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
-    Route::get('/dashboard', [HomeController::class, 'index']);
-    Route::post('/userInformation', [HomeController::class, 'userInformation'])->name('userInformation');
-    Route::resource('/curd', CurdController::class);
-});
