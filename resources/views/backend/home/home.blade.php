@@ -9,7 +9,8 @@
                 <div class="card">
                     <div class="card-head d-flex justify-content-between m-3">
                         <h3>Curd Operation</h3>
-                        <a href="" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Create
+                        <a href="{{route('ajax.curd')}}" class="btn btn-success">Ajax Curd</a>
+                        <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Create
                             Curd</a>
                     </div>
                     <hr>
