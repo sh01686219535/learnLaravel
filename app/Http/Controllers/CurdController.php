@@ -35,16 +35,36 @@ class CurdController extends Controller
         ]);
         $curd = new Curd();
         if ($request->hasFile('image')) {
-            $request->validate([
-                'image'=>'required'
-            ]);
-            $fileName = time().'-'.$request->image->getClientOriginalName();
-            $filePath = $request->image->storeAs('curd',$fileName);
-            $curd->image = 'storage/'.$filePath;
+            $imgPth = [];
+            foreach ($request->file('image') as $value) {
+                $request->validate([
+                    'image'=>'required'
+                ]);
+                $fileName = time().'-'.$value->getClientOriginalName();
+                $filePath = $value->storeAs('curd',$fileName);
+                $imgPth[] = 'storage/'.$filePath;
+            }
+            $curd->image = json_encode($imgPth);
         }
+
+        // $imgPth = [];
+        // if($request->hasFile($key)) {
+        //     foreach ($request->file($key) as $file) {
+        //         $filename = time() . '_' . $file->getClientOriginalName();
+        //         $file->move(public_path($path), $filename);
+        //         $imgPth[] = $path . '/' . $filename;
+        //     }
+        // }
+        // return $imgPth;
+
         $curd->title = $request->title;
         $curd->save();
-        return back();
+        return response()->json(
+            [
+                'status'=>'success',
+                'message'=>'Curd Create Successfully'
+            ]
+        );
     }
 
     /**

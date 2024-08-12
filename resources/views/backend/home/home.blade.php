@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-head d-flex justify-content-between m-3">
                         <h3>Curd Operation</h3>
-                        <a href="{{route('ajax.curd')}}" class="btn btn-success">Ajax Curd</a>
+                        <a href="{{ route('ajax.curd') }}" class="btn btn-success">Ajax Curd</a>
                         <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Create
                             Curd</a>
                     </div>
@@ -128,7 +128,8 @@
                                 <img src="{{ asset($curds->image) }}" alt="">
                                 <div class="card-body">
                                     <h1>{{ $curds->title }}</h1>
-                                    <a href="{{route('add-to-cart',$curds->id)}}" class="btn btn-danger mt-3">Add to Cart</a>
+                                    <a href="{{ route('add-to-cart', $curds->id) }}" class="btn btn-danger mt-3">Add to
+                                        Cart</a>
                                 </div>
                             </div>
                         </div>
@@ -143,7 +144,7 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <x-form.error />
-        <form action="{{ route('curd.store') }}" method="post" enctype="multipart/form-data">
+        <form id="upload-form" method="post" enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
@@ -151,13 +152,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div id="response"></div>
                     <div class="form-group">
                         <label for="title">Title</label>
                         <input type="text" id="title" name="title" class="form-control my-2">
                     </div>
                     <div class="form-group">
                         <label for="image">Image</label>
-                        <input type="file" id="image" name="image" class="form-control my-2">
+                        <input type="file" id="image" name="image[]" multiple class="form-control my-2">
                     </div>
                 </div>
                 <x-form.button>Submit</x-form.button>
@@ -165,3 +167,49 @@
         </form>
     </div>
 </div>
+@push('js')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#upload-form').submit(function(e) {
+            e.preventDefault(); 
+
+            const formData = new FormData(this);
+
+            $.ajax({
+                url: "{{ route('curd.store') }}",
+                method: 'POST',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(res) {
+                    if (res.status == 'success') {
+                        $('#exampleModal').modal('hide');
+                        $('#upload-form').[0].reset();
+                        $('#response').html(`
+                            <div class="alert alert-success alert-dismissible">
+                                ${res.message}
+                            </div>
+                        `);
+                    } else if(res.status == 'failed'){
+                        $('#response').html(`
+                            <div class="alert alert-danger alert-dismissible">
+                                ${res.message}
+                            </div>
+                        `);
+                    }
+                },
+                error: function(error) {
+                    $('#response').html(`
+                        <div class="alert alert-danger alert-dismissible">
+                            There is some error while uploading the file.
+                        </div>
+                    `);
+                },
+            });
+        });
+    });
+    </script>
+@endpush
+{{-- action="{{ route('curd.store') }}" --}}
