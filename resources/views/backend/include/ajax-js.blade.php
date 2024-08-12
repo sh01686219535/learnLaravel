@@ -10,22 +10,14 @@
 </script>
 <script>
     $(document).ready(function() {
-        $('.add_curd').on('click', function(e) {
+        $('#addFormData').submit(function(e) {
             e.preventDefault();
-            let formData = new FormData();
-            formData.append('name', $('#name').val());
-            formData.append('email', $('#email').val());
-            formData.append('phone', $('#phone').val());
-
-            let files = $('#image')[0].files;
-            for (let i = 0; i < files.length; i++) {
-                formData.append('image[]', files[i]);
-            }
-
+            const formData = new FormData(this);
             $.ajax({
                 url: "{{ route('add.curd') }}",
                 method: 'post',
                 data: formData,
+                cache: false,
                 contentType: false,
                 processData: false,
                 success: function(data) {
