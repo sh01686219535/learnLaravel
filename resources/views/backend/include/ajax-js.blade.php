@@ -46,6 +46,7 @@
             let name = $(this).data('name');
             let email = $(this).data('email');
             let phone = $(this).data('phone');
+        
             $('#up_id').val(id);
             $('#up_name').val(name);
             $('#up_email').val(email);
