@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendMail;
+use App\Mail\MyMail;
 use App\Models\Curd;
+use App\Models\Event;
 use App\Models\userInvormation;
 use Illuminate\Http\Request;
 use File;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
+
 
 class HomeController extends Controller
 {
     //index
-    public function index()
+    public function index() 
     {
         $curd = Cache::rememberForever('curd', function () {
             return Curd::all(); 
@@ -68,4 +73,21 @@ class HomeController extends Controller
             ]);
         return back();
     }
+    //eventStore
+    public function eventStore(Request $request){
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email', // Added email validation
+        ]);
+    
+        $event = new Event();
+        $event->name = $request->name;
+        $event->email = $request->email;
+        $event->save();
+        $name = $request->name;
+        $email = $request->email;
+        dispatch(new SendMail((object)$request->all(),$name,$email));
+        return back()->with('success', 'HTML Email Sent. Check your inbox.'); 
+    }
+    
 }

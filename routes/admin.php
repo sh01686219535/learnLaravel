@@ -10,6 +10,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::post('/userInformation', [HomeController::class, 'userInformation'])->name('userInformation');
     Route::resource('/curd', CurdController::class);
     Route::get('/add-to-cart/{id}',[HomeController::class ,'addToCart'])->name('add-to-cart');
+    Route::post('/event/store',[HomeController::class ,'eventStore'])->name('event.store');
    
     Route::get('/ajax/curd',[AjaxCurdController::class,'ajaxCurd'])->name('ajax.curd');
     Route::post('/add/curd',[AjaxCurdController::class,'addCurd'])->name('add.curd');

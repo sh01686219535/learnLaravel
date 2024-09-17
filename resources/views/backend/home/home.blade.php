@@ -137,9 +137,46 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-12 col-lg-12 col-sm-12">
+            <div class="card">
+                <div class="card-head">
+                    <div class="head-main d-flex justify-content-between m-3">
+                        <h3>Event Curd</h3>
+                        <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">Event Create</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
+<!-- Modal -->
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <x-form.error />
+        <form action="{{route('event.store')}}" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="eventLabel">Create Curd</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="response"></div>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" class="form-control my-2">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" class="form-control my-2">
+                    </div>
+                </div>
+                <x-form.button>Submit</x-form.button>
+            </div>
+        </form>
+    </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
