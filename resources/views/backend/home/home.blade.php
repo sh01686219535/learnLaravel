@@ -173,6 +173,7 @@
                     </div>
                 </div>
                 <x-form.button>Submit</x-form.button>
+                <a href="{{route('send-otp')}}" class="btn btn-primary">Send OTP</a>
             </div>
         </form>
     </div>

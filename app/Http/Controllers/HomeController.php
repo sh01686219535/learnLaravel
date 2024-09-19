@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SendMail;
+use App\Jobs\SendOtp;
 use App\Mail\MyMail;
+use App\Mail\SendOtpMail;
 use App\Models\Curd;
 use App\Models\Event;
 use App\Models\userInvormation;
@@ -86,8 +88,13 @@ class HomeController extends Controller
         $event->save();
         $name = $request->name;
         $email = $request->email;
-        dispatch(new SendMail((object)$request->all(),$name,$email));
+        for($i= 0 ; $i < 10; $i++){
+            dispatch(new SendMail((object)$request->all(),$name,$email));
+        }
         return back()->with('success', 'HTML Email Sent. Check your inbox.'); 
     }
-    
+    //sendOtp 
+    public function sendOtp(){
+        dispatch(new SendOtp())->onQueue('high');
+    }
 }
